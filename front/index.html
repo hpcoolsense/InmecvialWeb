@@ -1281,6 +1281,30 @@
     }
 
     @media (max-width: 600px) {
+      /* Eliminar franja negra derecha — full bleed en mobile */
+      .nav-inner,
+      .hero-content,
+      .services-inner,
+      .portfolio-inner,
+      .divisions-inner,
+      .metrics-inner,
+      .contact-inner,
+      .footer-inner {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .about-inner {
+        padding-left: 16px;
+        padding-right: 0;
+      }
+      /* Imágenes de divisiones llegan al borde */
+      .division-img {
+        margin-right: -16px;
+      }
+      .division-images-pair {
+        margin-right: -16px;
+      }
+
       /* Hero ocupa pantalla completa, contenido centrado */
       .hero { height: 100vh; height: 100dvh; min-height: 0; align-items: center; }
       .hero-content { padding: 0 20px; }
