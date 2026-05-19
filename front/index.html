@@ -1259,13 +1259,15 @@
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(0,0,0,0.97);
-        backdrop-filter: blur(20px);
+        background: #000000;
         padding: 32px clamp(24px, 5vw, 60px);
         gap: 24px;
       }
       .nav-toggle { display: flex; }
-      nav.scrolled .nav-links.open { background: rgba(0,0,0,0.98); }
+      nav:has(.nav-links.open) {
+        mix-blend-mode: normal;
+        background: #000000;
+      }
 
       .about-inner { grid-template-columns: 1fr; }
       .about-image-wrap { margin-left: 0; margin-top: 40px; }
