@@ -2029,7 +2029,7 @@
         const res = await fetch('https://shwsixiieyjborcfazuu.supabase.co/functions/v1/quick-worker', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nombre, telefono, email, mensaje, _t: Date.now() })
+          body: JSON.stringify({ nombre, telefono, email, mensaje })
         });
         const data = await res.json();
         if (data.ok) {
