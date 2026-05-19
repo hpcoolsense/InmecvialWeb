@@ -1918,6 +1918,10 @@
   </footer>
 
   <script>
+    // ===== FIX MOBILE HERO RESIZE =====
+    const hero = document.querySelector('.hero');
+    if (hero) hero.style.height = window.innerHeight + 'px';
+
     // ===== NAV SCROLL =====
     const nav = document.querySelector('nav');
     let lastScroll = 0;
