@@ -1286,40 +1286,42 @@
       .hero-content { padding: 0 20px; }
       .scroll-cue { display: none; }
 
-      /* Manifesto superpuesto sobre video en mobile */
+      /* Manifesto + video mobile: texto izq superpuesto, video der */
       .manifesto-video-section {
         position: relative;
         max-width: 100%;
-        padding: 0;
+        padding: 32px 0 32px 20px;
         gap: 0;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        overflow: hidden;
       }
       .manifesto-video-bg {
-        width: 100%;
-        margin-left: 0;
+        width: 60%;
+        margin-left: -20px;
+        flex-shrink: 0;
       }
       .manifesto-video-bg::before {
-        background: rgba(0,0,0,0.55);
+        background: linear-gradient(to right, var(--black) 0%, rgba(0,0,0,0.5) 40%, transparent 80%);
       }
       .manifesto-video-bg video {
-        filter: grayscale(100%) contrast(1.05) brightness(0.5);
+        filter: grayscale(100%) contrast(1.05) brightness(0.55);
       }
       .manifesto {
         position: absolute;
-        top: 0;
         left: 0;
-        right: 0;
+        top: 0;
         bottom: 0;
         z-index: 3;
+        width: 75%;
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding: 24px;
+        padding: 24px 20px;
       }
       .manifesto p {
-        font-size: 1rem;
-        line-height: 1.5;
-        text-align: center;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        text-align: left;
       }
       .manifesto-inner {
         max-width: 100%;
