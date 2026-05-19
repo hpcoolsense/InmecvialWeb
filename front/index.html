@@ -1874,24 +1874,29 @@
         </div>
       </div>
 
-      <form class="contact-form reveal reveal-delay-1" onsubmit="return false;">
+      <form class="contact-form reveal reveal-delay-1" action="https://formsubmit.co/erichponce11@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Nueva consulta desde INMECVIAL Web">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://hpcoolsense.github.io/InmecvialWeb/front/index.html?enviado=1">
+        <input type="hidden" name="_template" value="box">
+        <input type="text" name="_honey" style="display:none">
         <div class="form-row">
           <div class="form-field">
             <label>Nombre</label>
-            <input type="text" placeholder="Tu nombre">
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
           </div>
           <div class="form-field">
             <label>Teléfono</label>
-            <input type="tel" placeholder="+54 ">
+            <input type="tel" name="telefono" placeholder="+54 " required>
           </div>
         </div>
         <div class="form-field">
           <label>Email</label>
-          <input type="email" placeholder="tu@email.com">
+          <input type="email" name="email" placeholder="tu@email.com" required>
         </div>
         <div class="form-field">
           <label>Mensaje</label>
-          <textarea placeholder="Contanos sobre tu proyecto..."></textarea>
+          <textarea name="mensaje" placeholder="Contanos sobre tu proyecto..." required></textarea>
         </div>
         <button type="submit" class="btn btn-accent" style="width:100%;justify-content:center;margin-top:8px;">Enviar consulta</button>
       </form>
