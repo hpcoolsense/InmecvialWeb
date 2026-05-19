@@ -2009,43 +2009,57 @@
       });
     }
 
-    // ===== CONTACT FORM → WhatsApp con datos del formulario =====
+    // ===== CONTACT FORM =====
     const form = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const formMsg = document.getElementById('formMsg');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      submitBtn.textContent = 'Enviando...';
+      submitBtn.disabled = true;
+      formMsg.style.display = 'none';
 
       const nombre = form.querySelector('[name="nombre"]').value;
       const telefono = form.querySelector('[name="telefono"]').value;
       const email = form.querySelector('[name="email"]').value;
       const mensaje = form.querySelector('[name="mensaje"]').value;
 
-      const text = [
-        '*Nueva consulta — INMECVIAL Web*',
-        '',
-        '*Nombre:* ' + nombre,
-        '*Teléfono:* ' + telefono,
-        '*Email:* ' + email,
-        '*Mensaje:* ' + mensaje
-      ].join('\n');
-
-      window.open('https://wa.me/5491136692311?text=' + encodeURIComponent(text), '_blank');
-
-      formMsg.style.display = 'block';
-      formMsg.style.background = 'rgba(37,211,102,0.15)';
-      formMsg.style.color = '#25D366';
-      formMsg.textContent = 'Consulta lista. Enviala desde WhatsApp para confirmar.';
-      submitBtn.textContent = 'Enviado';
-      submitBtn.disabled = true;
-
-      setTimeout(() => {
-        form.reset();
-        formMsg.style.display = 'none';
-        submitBtn.textContent = 'Enviar consulta';
-        submitBtn.disabled = false;
-      }, 5000);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: 'd6a0528a-2e98-4152-8e6e-2d4824e78088',
+            subject: 'Nueva consulta desde INMECVIAL Web',
+            from_name: 'INMECVIAL Web',
+            nombre: nombre,
+            telefono: telefono,
+            email: email,
+            mensaje: mensaje
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          formMsg.style.display = 'block';
+          formMsg.style.background = 'rgba(232,161,38,0.15)';
+          formMsg.style.color = '#E8A126';
+          formMsg.textContent = 'Consulta enviada correctamente. Nos comunicaremos a la brevedad.';
+          form.reset();
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (err) {
+        // Fallback: abrir WhatsApp
+        const text = `*Nueva consulta — INMECVIAL Web*%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Teléfono:* ${encodeURIComponent(telefono)}%0A*Email:* ${encodeURIComponent(email)}%0A*Mensaje:* ${encodeURIComponent(mensaje)}`;
+        window.open('https://wa.me/5491136692311?text=' + text, '_blank');
+        formMsg.style.display = 'block';
+        formMsg.style.background = 'rgba(37,211,102,0.15)';
+        formMsg.style.color = '#25D366';
+        formMsg.textContent = 'Redirigiendo a WhatsApp...';
+      }
+      submitBtn.textContent = 'Enviar consulta';
+      submitBtn.disabled = false;
     });
   </script>
 
