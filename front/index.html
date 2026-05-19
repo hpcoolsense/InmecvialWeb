@@ -1874,12 +1874,7 @@
         </div>
       </div>
 
-      <form class="contact-form reveal reveal-delay-1" action="https://formsubmit.co/erichponce11@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Nueva consulta desde INMECVIAL Web">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://hpcoolsense.github.io/InmecvialWeb/front/index.html?enviado=1">
-        <input type="hidden" name="_template" value="box">
-        <input type="text" name="_honey" style="display:none">
+      <form class="contact-form reveal reveal-delay-1" id="contactForm">
         <div class="form-row">
           <div class="form-field">
             <label>Nombre</label>
@@ -1898,7 +1893,8 @@
           <label>Mensaje</label>
           <textarea name="mensaje" placeholder="Contanos sobre tu proyecto..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-accent" style="width:100%;justify-content:center;margin-top:8px;">Enviar consulta</button>
+        <button type="submit" class="btn btn-accent" id="submitBtn" style="width:100%;justify-content:center;margin-top:8px;">Enviar consulta</button>
+        <div id="formMsg" style="display:none;text-align:center;padding:16px;margin-top:12px;font-size:0.85rem;font-weight:600;border-radius:4px;"></div>
       </form>
     </div>
   </section>
@@ -2012,6 +2008,46 @@
         }, i * 2000);
       });
     }
+
+    // ===== CONTACT FORM =====
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formMsg = document.getElementById('formMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.textContent = 'Enviando...';
+      submitBtn.disabled = true;
+
+      const data = new FormData(form);
+      data.append('_subject', 'Nueva consulta desde INMECVIAL Web');
+      data.append('_captcha', 'false');
+      data.append('_template', 'box');
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/erichponce11@gmail.com', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: data
+        });
+        if (res.ok) {
+          formMsg.style.display = 'block';
+          formMsg.style.background = 'rgba(232,161,38,0.15)';
+          formMsg.style.color = '#E8A126';
+          formMsg.textContent = 'Consulta enviada correctamente. Nos comunicaremos a la brevedad.';
+          form.reset();
+        } else {
+          throw new Error('Error');
+        }
+      } catch (err) {
+        formMsg.style.display = 'block';
+        formMsg.style.background = 'rgba(255,0,0,0.1)';
+        formMsg.style.color = '#ff4444';
+        formMsg.textContent = 'Error al enviar. Intentá de nuevo o escribinos por WhatsApp.';
+      }
+      submitBtn.textContent = 'Enviar consulta';
+      submitBtn.disabled = false;
+    });
   </script>
 
 </body>
