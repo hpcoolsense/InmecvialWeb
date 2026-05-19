@@ -2009,7 +2009,7 @@
       });
     }
 
-    // ===== CONTACT FORM =====
+    // ===== CONTACT FORM → Supabase Edge Function =====
     const form = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const formMsg = document.getElementById('formMsg');
@@ -2026,37 +2026,26 @@
       const mensaje = form.querySelector('[name="mensaje"]').value;
 
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
+        const res = await fetch('https://fxnadonczxslmwwtrefc.supabase.co/functions/v1/inmecvial-contact', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            access_key: 'd6a0528a-2e98-4152-8e6e-2d4824e78088',
-            subject: 'Nueva consulta desde INMECVIAL Web',
-            from_name: 'INMECVIAL Web',
-            nombre: nombre,
-            telefono: telefono,
-            email: email,
-            mensaje: mensaje
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, telefono, email, mensaje, _t: Date.now() })
         });
         const data = await res.json();
-        if (data.success) {
+        if (data.ok) {
           formMsg.style.display = 'block';
           formMsg.style.background = 'rgba(232,161,38,0.15)';
           formMsg.style.color = '#E8A126';
           formMsg.textContent = 'Consulta enviada correctamente. Nos comunicaremos a la brevedad.';
           form.reset();
         } else {
-          throw new Error(data.message);
+          throw new Error(data.error || 'Error');
         }
       } catch (err) {
-        // Fallback: abrir WhatsApp
-        const text = `*Nueva consulta — INMECVIAL Web*%0A%0A*Nombre:* ${encodeURIComponent(nombre)}%0A*Teléfono:* ${encodeURIComponent(telefono)}%0A*Email:* ${encodeURIComponent(email)}%0A*Mensaje:* ${encodeURIComponent(mensaje)}`;
-        window.open('https://wa.me/5491136692311?text=' + text, '_blank');
         formMsg.style.display = 'block';
-        formMsg.style.background = 'rgba(37,211,102,0.15)';
-        formMsg.style.color = '#25D366';
-        formMsg.textContent = 'Redirigiendo a WhatsApp...';
+        formMsg.style.background = 'rgba(255,0,0,0.1)';
+        formMsg.style.color = '#ff4444';
+        formMsg.textContent = 'Error al enviar. Intentá por WhatsApp.';
       }
       submitBtn.textContent = 'Enviar consulta';
       submitBtn.disabled = false;
