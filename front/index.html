@@ -1289,6 +1289,7 @@
       /* Manifesto superpuesto sobre video en mobile */
       .manifesto-video-section {
         position: relative;
+        max-width: 100%;
         padding: 0;
         gap: 0;
         flex-direction: column;
@@ -1298,22 +1299,27 @@
         margin-left: 0;
       }
       .manifesto-video-bg::before {
-        background: linear-gradient(to bottom, var(--black) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,0.3) 60%, transparent 100%);
+        background: rgba(0,0,0,0.55);
       }
       .manifesto-video-bg video {
-        filter: grayscale(100%) contrast(1.05) brightness(0.4);
+        filter: grayscale(100%) contrast(1.05) brightness(0.5);
       }
       .manifesto {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
+        bottom: 0;
         z-index: 3;
-        padding: 32px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
       }
       .manifesto p {
         font-size: 1rem;
         line-height: 1.5;
+        text-align: center;
       }
       .manifesto-inner {
         max-width: 100%;
