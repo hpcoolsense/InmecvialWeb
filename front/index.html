@@ -1286,24 +1286,78 @@
       .hero-content { padding: 0 20px; }
       .scroll-cue { display: none; }
 
-      /* Manifesto + video mobile */
+      /* Manifesto superpuesto sobre video en mobile */
       .manifesto-video-section {
+        position: relative;
+        padding: 0;
+        gap: 0;
         flex-direction: column;
-        padding: 32px 20px;
-        gap: 20px;
-        align-items: flex-start;
-      }
-      .manifesto p {
-        font-size: 1.05rem;
-        line-height: 1.5;
       }
       .manifesto-video-bg {
-        width: 180px;
-        align-self: flex-end;
-        margin-left: auto;
+        width: 100%;
+        margin-left: 0;
+      }
+      .manifesto-video-bg::before {
+        background: linear-gradient(to bottom, var(--black) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,0.3) 60%, transparent 100%);
+      }
+      .manifesto-video-bg video {
+        filter: grayscale(100%) contrast(1.05) brightness(0.4);
+      }
+      .manifesto {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        padding: 32px 20px;
+      }
+      .manifesto p {
+        font-size: 1rem;
+        line-height: 1.5;
       }
       .manifesto-inner {
         max-width: 100%;
+      }
+
+      /* Repair grid → carousel 2x2 en mobile */
+      .repair-grid {
+        display: none !important;
+      }
+      .repair-carousel {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .repair-carousel-cell {
+        padding: 20px 16px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        text-align: center;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .repair-carousel-cell span {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--off-white);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .repair-carousel-cell .repair-dot-carousel {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 5px;
+        height: 5px;
+        background: var(--accent);
+        border-radius: 50%;
+      }
+      .repair-carousel-cell.switching span {
+        opacity: 0;
+        transform: translateY(-10px);
       }
       /* Divisiones 1, 2, 3 — imágenes a color en mobile */
       .division-img img {
@@ -1604,6 +1658,14 @@
           <div class="repair-item"><div class="repair-dot"></div><span>Soldadura y Reforzado</span></div>
           <div class="repair-item"><div class="repair-dot"></div><span>Repuestos Originales</span></div>
         </div>
+
+        <!-- Carousel 2x2 mobile only -->
+        <div class="repair-carousel" style="display:none">
+          <div class="repair-carousel-cell"><div class="repair-dot-carousel"></div><span>Cilindros Hidráulicos</span></div>
+          <div class="repair-carousel-cell"><div class="repair-dot-carousel"></div><span>Soldadura Especial</span></div>
+          <div class="repair-carousel-cell"><div class="repair-dot-carousel"></div><span>Motor Diesel y Nafta</span></div>
+          <div class="repair-carousel-cell"><div class="repair-dot-carousel"></div><span>Tren Rodante</span></div>
+        </div>
       </div>
 
     </div>
@@ -1878,6 +1940,41 @@
     }, { threshold: 0.5 });
 
     document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+    // ===== REPAIR CAROUSEL 2x2 (mobile) =====
+    const repairServices = [
+      'Cilindros Hidráulicos', 'Soldadura Especial', 'Motor Diesel y Nafta',
+      'Tren Rodante', 'Motores de Giro', 'Transmisiones',
+      'Convertidores y Diferenciales', 'Mandos Finales', 'Suspensiones y Masas',
+      'Amortiguadores', 'Fabricación de Aspas', 'Testeo Eléctrico',
+      'Motor Eléctrico', 'Turbos', 'Válvulas',
+      'Bombas Hidráulicas', 'Soldadura y Reforzado', 'Repuestos Originales'
+    ];
+
+    const cells = document.querySelectorAll('.repair-carousel-cell');
+    if (cells.length === 4) {
+      const indices = [0, 1, 2, 3];
+
+      function rotateCell(cellIndex) {
+        const cell = cells[cellIndex];
+        const span = cell.querySelector('span');
+
+        cell.classList.add('switching');
+
+        setTimeout(() => {
+          indices[cellIndex] = (indices[cellIndex] + 4) % repairServices.length;
+          span.textContent = repairServices[indices[cellIndex]];
+          cell.classList.remove('switching');
+        }, 500);
+      }
+
+      // Staggered rotation: each cell rotates every 5s, offset by 2s
+      cells.forEach((_, i) => {
+        setTimeout(() => {
+          setInterval(() => rotateCell(i), 5000);
+        }, i * 2000);
+      });
+    }
   </script>
 
 </body>
