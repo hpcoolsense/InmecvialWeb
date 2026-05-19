@@ -1282,22 +1282,20 @@
     }
 
     @media (max-width: 600px) {
-      /* Fix franja negra derecha en mobile */
-      .manifesto-video-section {
-        max-width: 100%;
+      /* Fix franja negra: desactivar translateX en mobile */
+      .reveal-left,
+      .reveal-right {
+        transform: translateY(40px);
       }
-
-      /* Forzar todo al ancho real */
-      .services,
-      .divisions,
-      .portfolio,
-      .metrics,
-      .cta,
-      .contact,
-      footer,
-      .about {
-        max-width: 100%;
-        overflow-x: hidden;
+      .reveal-left.visible,
+      .reveal-right.visible {
+        transform: translateY(0);
+      }
+      .about-image-wrap.reveal {
+        transform: translateY(40px);
+      }
+      .about-image-wrap.reveal.visible {
+        transform: translateY(0);
       }
 
       /* Hero ocupa pantalla completa, contenido centrado */
